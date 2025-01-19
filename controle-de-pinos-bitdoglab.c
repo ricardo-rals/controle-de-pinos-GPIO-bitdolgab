@@ -45,12 +45,14 @@ void exibir_menu(){
    printf("B - Acender o LED azul\n");
    printf("G - Acender o LED verde\n");
    printf("W - Acender todos os LEDs (luz branca)\n");
+   printf("D - Desligar todos os LEDs\n");
    printf("Z - Ativar o buzzer por 2 segundos\n");
    printf("X - Entrar em modo bootloader\n");
    printf("--------------------------------------------\n\n");
    printf("Digite um novo comando via UART:\n");
 
 }
+
 int main()
 {
     // Set up our UART
@@ -97,6 +99,13 @@ int main()
                gpio_put(GPIO_BLUE_LED,1); 
                gpio_put(GPIO_GREEN_LED,1);
                printf("Todos os leds acessos, luz braca.\n");
+               break;
+            case 'd':
+            case 'D': // acende a luz branca(white)
+               gpio_put(GPIO_RED_LED, 0); 
+               gpio_put(GPIO_BLUE_LED, 0); 
+               gpio_put(GPIO_GREEN_LED, 0);
+               printf("Todos os LEDs desligados.\n");
                break;
             case 'z':
             case 'Z': // ativa o buzer por 2s
