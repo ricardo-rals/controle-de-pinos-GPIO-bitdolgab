@@ -1,70 +1,101 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "hardware/pwm.h"
-#include "hardware/clocks.h"
+#include "hardware/uart.h"
+#include "pico/bootrom.h" // Biblioteca para usar o comando reboot (bootloader via serial)
 
-#define LED_VERDE 11
-#define LED_AZUL 12
-#define LED_VERMELHO 13
-#define BUZZER 21
-#define FREQUENCIA_BUZZER 2000
+// UART defines
+// By default the stdout UART is `uart0`, so we will use the second one
+#define UART_ID uart1
+#define BAUD_RATE 115200
 
-// Definição de uma função para inicializar o PWM no pino do buzzer
-void pwm_init_buzzer(uint pin) {
-    // Configurar o pino como saída de PWM
-    gpio_set_function(pin, GPIO_FUNC_PWM);
+// Use pins 4 and 5 for UART1
+// Pins can be changed, see the GPIO function select table in the datasheet for information on GPIO assignments
+#define UART_TX_PIN 4
+#define UART_RX_PIN 5
 
-    // Obter o slice do PWM associado ao pino
-    uint slice_num = pwm_gpio_to_slice_num(pin);
+#define GPIO_RED_LED 13
+#define GPIO_BLUE_LED 12
+#define GPIO_GREEN_LED 11
+#define GPIO_BUZZER_B 10
 
-    // Configurar o PWM com frequência desejada
-    pwm_config config = pwm_get_default_config();
-    pwm_config_set_clkdiv(&config, clock_get_hz(clk_sys) / (FREQUENCIA_BUZZER * 4096)); // Divisor de clock
-    pwm_init(slice_num, &config, true);
+void inicializador_perifericos(){
+    gpio_init(GPIO_RED_LED);
+    gpio_set_dir(GPIO_RED_LED, GPIO_OUT);
+    gpio_put(GPIO_RED_LED,0);
+    
+    gpio_init(GPIO_BLUE_LED);
+    gpio_set_dir(GPIO_BLUE_LED, GPIO_OUT);
+    gpio_put(GPIO_BLUE_LED,0);
 
-    // Iniciar o PWM no nível baixo
-    pwm_set_gpio_level(pin, 0);
+    gpio_init(GPIO_GREEN_LED);
+    gpio_set_dir(GPIO_GREEN_LED, GPIO_OUT);
+    gpio_put(GPIO_GREEN_LED,0);
 }
 
-// Função para ligar o buzzer de forma similar aos LEDs
-void ligar_buzzer() {
-    printf("Ligando Buzzer\n");
-
-    pwm_set_gpio_level(BUZZER, 1024);
-    sleep_ms(2000);  // Aguardar 500ms (tempo do beep)
-    pwm_set_gpio_level(BUZZER, 0);     // Desativar o buzzer
-    sleep_ms(500);  // Pausa entre os beeps
+void ligar_led(uint gpio) {
+    gpio_put(GPIO_RED_LED, gpio == GPIO_RED_LED);
+    gpio_put(GPIO_BLUE_LED, gpio == GPIO_BLUE_LED);
+    gpio_put(GPIO_GREEN_LED, gpio == GPIO_GREEN_LED);
 }
-
-// Função de inicilização e configuração dos LEDS
-void init_leds() {
-    gpio_init(LED_VERDE);
-    gpio_init(LED_AZUL);
-    gpio_init(LED_VERMELHO);
-    gpio_set_dir(LED_VERDE, GPIO_OUT);
-    gpio_set_dir(LED_AZUL, GPIO_OUT);
-    gpio_set_dir(LED_VERMELHO, GPIO_OUT);
-}
-
-//Função ligar LED
-void set_leds(bool green, bool blue, bool red){
-	gpio_put(LED_VERDE, green); //Ligar o led verde
-	gpio_put(LED_AZUL, blue); //Ligar o led azul
-	gpio_put(LED_VERMELHO, red); //Ligar o led vermelho
-    sleep_ms(500); // Aguardar 500ms
-}
-
 int main()
 {
+    // Set up our UART
+    uart_init(UART_ID, BAUD_RATE);
+    // Set the TX and RX pins by using the function select on the GPIO
+    // Set datasheet for more information on function select
+    gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
+    gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
+    
+    // Use some the various UART functions to send out data
+    // In a default system, printf will also output via the default UART
+    
+    // Send out a string, with CR/LF conversions
+    uart_puts(UART_ID, " Hello, UART!\n");
+    printf("Iniciando o sistema.\n");
+     
+     //inicio da main normalgit status
     stdio_init_all();
-    init_leds();
-    pwm_init_buzzer(BUZZER);
-
+    inicializador_perifericos();
+    
     while (true) {
-        ligar_buzzer();
-        set_leds(1,0,0); // Ligar LED Verde
-        set_leds(0,1,0); // Ligar LED Azul
+        printf("Digite um novo comando via UART:\n");
+        
+        char comando = getchar(); // Lê o comando do teclado via uart
+        
+          switch (comando){
+            case 'r': //acende o led vermelho
+               ligar_led(GPIO_RED_LED);
+               printf("Led vermelho acesso.\n");
+               break;
+            case 'b': //acende o led azul
+               ligar_led(GPIO_BLUE_LED);
+               printf("Led azul acesso.\n");
+               break;
+            case 'g': //acedde led verde
+               ligar_led(GPIO_GREEN_LED);
+               printf("Led verde acesso.\n");
+               break;
+            case 'w': // acende a luz branca(white)
+               gpio_put(GPIO_RED_LED,1); 
+               gpio_put(GPIO_BLUE_LED,1); 
+               gpio_put(GPIO_GREEN_LED,1);
+               printf("Todos os leds acessos, luz braca.\n");
+               break;
+            case 'z': // ativa o buzer por 2s
+               gpio_put(GPIO_BUZZER_B,1);
+               sleep_ms(2000);
+               gpio_put(GPIO_BUZZER_B,0);
+               printf("Buzzer ligado por 2 segundos.\n");
+               break;
+            case 'x': // reebot, sistema reiniciado e placa em modo bootloader
+              printf("Reiniciando o sistema...\n");
+              sleep_ms(300); // atraso antes de reiniciar para garatir a impressao
+              reset_usb_boot(0, 0); //entra em modo bootloader
+              break;
+            default:
+              printf("Comando invalido:%c\n", comando);
+              break;     
+          }
     }
-
     return 0;
 }
