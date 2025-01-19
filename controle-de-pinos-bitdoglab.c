@@ -36,14 +36,34 @@ void ligar_buzzer() {
     sleep_ms(500);  // Pausa entre os beeps
 }
 
+// Função de inicilização e configuração dos LEDS
+void init_leds() {
+    gpio_init(LED_VERDE);
+    gpio_init(LED_AZUL);
+    gpio_init(LED_VERMELHO);
+    gpio_set_dir(LED_VERDE, GPIO_OUT);
+    gpio_set_dir(LED_AZUL, GPIO_OUT);
+    gpio_set_dir(LED_VERMELHO, GPIO_OUT);
+}
+
+//Função ligar LED
+void set_leds(bool green, bool blue, bool red){
+	gpio_put(LED_VERDE, green); //Ligar o led verde
+	gpio_put(LED_AZUL, blue); //Ligar o led azul
+	gpio_put(LED_VERMELHO, red); //Ligar o led vermelho
+    sleep_ms(500); // Aguardar 500ms
+}
+
 int main()
 {
     stdio_init_all();
-
+    init_leds();
     pwm_init_buzzer(BUZZER);
 
     while (true) {
         ligar_buzzer();
+        set_leds(1,0,0); // Ligar LED Verde
+        set_leds(0,1,0); // Ligar LED Azul
     }
 
     return 0;
