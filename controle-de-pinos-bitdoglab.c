@@ -98,7 +98,7 @@ int main()
                gpio_put(GPIO_RED_LED,1); 
                gpio_put(GPIO_BLUE_LED,1); 
                gpio_put(GPIO_GREEN_LED,1);
-               printf("Todos os leds acessos, luz braca.\n");
+               printf("Todos os leds acessos, luz branca.\n");
                break;
             case 'd':
             case 'D': // acende a luz branca(white)
