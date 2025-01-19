@@ -37,6 +37,20 @@ void ligar_led(uint gpio) {
     gpio_put(GPIO_BLUE_LED, gpio == GPIO_BLUE_LED);
     gpio_put(GPIO_GREEN_LED, gpio == GPIO_GREEN_LED);
 }
+
+void exibir_menu(){
+   printf("\n--------------------------------------------\n");
+   printf("MENU DE CONTROLE:\n\n");
+   printf("R - Acender o LED vermelho\n");
+   printf("B - Acender o LED azul\n");
+   printf("G - Acender o LED verde\n");
+   printf("W - Acender todos os LEDs (luz branca)\n");
+   printf("Z - Ativar o buzzer por 2 segundos\n");
+   printf("X - Entrar em modo bootloader\n");
+   printf("--------------------------------------------\n\n");
+   printf("Digite um novo comando via UART:\n");
+
+}
 int main()
 {
     // Set up our UART
@@ -58,8 +72,7 @@ int main()
     inicializador_perifericos();
     
     while (true) {
-        printf("Digite um novo comando via UART:\n");
-        
+        exibir_menu();
         char comando = getchar(); // Lê o comando do teclado via uart
         
           switch (comando){
