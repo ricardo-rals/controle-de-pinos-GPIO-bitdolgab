@@ -1,5 +1,42 @@
 # Plano de Trabalho: Controle de Pinos GPIO da placa BitDogLab
 
+# Projeto: Controle de Periféricos no Raspberry Pi Pico
+
+## Descrição
+Este projeto implementa um sistema de controle de periféricos utilizando a placa Raspberry Pi Pico W. Ele utiliza comunicação UART para receber comandos e controlar LEDs RGB e um buzzer, além de permitir entrar no modo bootloader.
+
+## Funcionalidades
+- **Controle de LEDs**: Acender e apagar LEDs vermelho, azul e verde individualmente, ou acender todos simultaneamente (luz branca).
+- **Controle do Buzzer**: Emitir som em uma frequência específica por um tempo determinado.
+- **Modo Bootloader**: Reiniciar a placa e colocá-la em modo bootloader via comando UART.
+- **Menu Interativo**: Exibe um menu de controle via comunicação serial.
+
+## Estrutura do Código
+O código está organizado em funções principais para inicialização e controle dos periféricos:
+- `pwm_init_buzzer(uint pin)`: Inicializa o PWM para controle do buzzer.
+- `beep(uint note, uint duration)`: Gera um som no buzzer em uma frequência e duração específicas.
+- `inicializador_perifericos()`: Inicializa os pinos GPIO para os LEDs.
+- `ligar_led(uint gpio)`: Controla qual LED será aceso.
+- `exibir_menu()`: Exibe o menu de controle via UART.
+
+## Requisitos de Hardware
+- Raspberry Pi Pico.
+- LEDs conectados aos pinos GPIO 11, 12 e 13.
+- Buzzer conectado ao pino GPIO 21.
+- Comunicação UART configurada nos pinos GPIO 4 (TX) e GPIO 5 (RX).
+
+## Comandos UART
+| Comando | Ação                              |
+|---------|-----------------------------------|
+| R       | Acender o LED vermelho           |
+| B       | Acender o LED azul               |
+| G       | Acender o LED verde              |
+| W       | Acender todos os LEDs (luz branca)|
+| D       | Desligar todos os LEDs           |
+| Z       | Ativar o buzzer por 2 segundos   |
+| X       | Reiniciar no modo bootloader     |
+
+
 ### Divisão de Tarefas entre 9 Pessoas
 
 ## **Tarefas e Responsabilidades**
@@ -66,7 +103,7 @@
 | Implantação do Controle dos Três LEDs          |Isabella          |
 | Implementação do Controle do Buzzer            |Ricardo           | 
 | Implementação do Modo de Gravação              |Dorivaldo         | 
-| Testes e Validação                             |                  | 
+| Testes e Validação                             |Ricardo           | 
 | Documentação                                   |Jabson            | 
 
 ## **Link com a produção do vídeo:**
