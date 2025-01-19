@@ -69,3 +69,5 @@
 | Testes e Validação            |           | 
 | Documentação               |           | 
 
+## **Link com a produção do vídeo:**
+https://www.youtube.com/shorts/YFatIZdGuIk
