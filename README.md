@@ -71,3 +71,5 @@
 
 ## **Link com a produção do vídeo:**
 https://www.youtube.com/shorts/YFatIZdGuIk
+
+![BitDogLab](https://github.com/user-attachments/assets/a1e601b0-1de5-49ca-b32f-50024ebe994d)
