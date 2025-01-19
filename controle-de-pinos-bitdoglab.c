@@ -63,37 +63,43 @@ int main()
         char comando = getchar(); // Lê o comando do teclado via uart
         
           switch (comando){
-            case 'r': //acende o led vermelho
+            case 'r':
+            case 'R': //acende o led vermelho
                ligar_led(GPIO_RED_LED);
                printf("Led vermelho acesso.\n");
                break;
-            case 'b': //acende o led azul
+            case 'b':
+            case 'B': //acende o led azul
                ligar_led(GPIO_BLUE_LED);
                printf("Led azul acesso.\n");
                break;
-            case 'g': //acedde led verde
+            case 'g':
+            case 'G': //acedde led verde
                ligar_led(GPIO_GREEN_LED);
                printf("Led verde acesso.\n");
                break;
-            case 'w': // acende a luz branca(white)
+            case 'w':
+            case 'W': // acende a luz branca(white)
                gpio_put(GPIO_RED_LED,1); 
                gpio_put(GPIO_BLUE_LED,1); 
                gpio_put(GPIO_GREEN_LED,1);
                printf("Todos os leds acessos, luz braca.\n");
                break;
-            case 'z': // ativa o buzer por 2s
+            case 'z':
+            case 'Z': // ativa o buzer por 2s
                gpio_put(GPIO_BUZZER_B,1);
                sleep_ms(2000);
                gpio_put(GPIO_BUZZER_B,0);
                printf("Buzzer ligado por 2 segundos.\n");
                break;
-            case 'x': // reebot, sistema reiniciado e placa em modo bootloader
+            case 'x':
+            case 'X': // reebot, sistema reiniciado e placa em modo bootloader
               printf("Reiniciando o sistema...\n");
               sleep_ms(300); // atraso antes de reiniciar para garatir a impressao
               reset_usb_boot(0, 0); //entra em modo bootloader
               break;
             default:
-              printf("Comando invalido:%c\n", comando);
+              printf("Comando invalido: %c\n", comando);
               break;     
           }
     }
