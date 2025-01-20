@@ -18,6 +18,7 @@ O código está organizado em funções principais para inicialização e contro
 - `exibir_menu()`: Exibe o menu de controle via UART.
 
 ## Estrutura dos arquivos
+```
 project/
 │
 ├── includes/
@@ -34,7 +35,7 @@ project/
 ├── controle-de-pinos-bitdoglab.c
 ├── CMakeLists.txt
 └── README.md
-
+```
 
 ## Requisitos de Hardware
 - Raspberry Pi Pico.
