@@ -35,7 +35,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(controle-de-pinos-bitdoglab controle-de-pinos-bitdoglab.c )
+add_executable(controle-de-pinos-bitdoglab controle-de-pinos-bitdoglab.c src/buzzer.c src/leds.c src/menu.c src/uart.c)
 
 pico_set_program_name(controle-de-pinos-bitdoglab "controle-de-pinos-bitdoglab")
 pico_set_program_version(controle-de-pinos-bitdoglab "0.1")
