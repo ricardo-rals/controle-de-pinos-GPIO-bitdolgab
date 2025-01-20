@@ -1,5 +1,3 @@
-# Plano de Trabalho: Controle de Pinos GPIO da placa BitDogLab
-
 # Projeto: Controle de Periféricos no Raspberry Pi Pico
 
 ## Descrição
@@ -19,6 +17,25 @@ O código está organizado em funções principais para inicialização e contro
 - `ligar_led(uint gpio)`: Controla qual LED será aceso.
 - `exibir_menu()`: Exibe o menu de controle via UART.
 
+## Estrutura dos arquivos
+project/
+│
+├── includes/
+│   ├── buzzer.h
+│   ├── leds.h
+│   ├── menu.h
+│   └── uart.h
+│
+├── src/
+│   ├── buzzer.c
+│   ├── leds.c
+│   ├── menu.c
+│   └── uart.c
+├── controle-de-pinos-bitdoglab.c
+├── CMakeLists.txt
+└── README.md
+
+
 ## Requisitos de Hardware
 - Raspberry Pi Pico.
 - LEDs conectados aos pinos GPIO 11, 12 e 13.
@@ -36,7 +53,7 @@ O código está organizado em funções principais para inicialização e contro
 | Z       | Ativar o buzzer por 2 segundos   |
 | X       | Reiniciar no modo bootloader     |
 
-
+# Plano de Trabalho: Controle de Pinos GPIO da placa BitDogLab
 ### Divisão de Tarefas entre 9 Pessoas
 
 ## **Tarefas e Responsabilidades**
